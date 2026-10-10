@@ -73,7 +73,7 @@ router.post("/:id/escalate", chatLimiter, async (req, res) => {
   conversation.aiEnabled = false;
   await conversation.save();
   if (wasAi) await addMessage(conversation, "system", "You've asked for a human. A support agent will reply here shortly.");
-  else realtime.emitConversation(conversation);
+  else await realtime.emitConversation(conversation);
   res.json({ conversation });
 });
 

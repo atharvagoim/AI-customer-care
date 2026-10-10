@@ -29,8 +29,8 @@ export async function addMessage(conversation, sender, text) {
   }
   await conversation.save();
 
-  realtime.emitMessage(conversation._id, message.toObject());
-  realtime.emitConversation(conversation);
+  await realtime.emitMessage(conversation._id, message.toObject());
+  await realtime.emitConversation(conversation);
   return message;
 }
 
@@ -64,7 +64,7 @@ async function recentHistory(conversationId) {
 
 /** AI reply to the latest customer message (only in AI mode). Shows a typing indicator meanwhile. */
 export async function runAiReply(conversation) {
-  realtime.emitTyping(conversation._id, "ai", true);
+  await realtime.emitTyping(conversation._id, "ai", true);
   try {
     const history = await recentHistory(conversation._id);
     const latest = history.pop();
@@ -84,7 +84,7 @@ export async function runAiReply(conversation) {
     const message = await addMessage(fresh, "ai", result.reply);
     return { message, ticket, aiUnavailable: Boolean(result.error) };
   } finally {
-    realtime.emitTyping(conversation._id, "ai", false);
+    await realtime.emitTyping(conversation._id, "ai", false);
   }
 }
 

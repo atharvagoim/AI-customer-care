@@ -69,7 +69,7 @@ async function markRead(c) {
   if (!c.unreadByAdmin) return;
   c.unreadByAdmin = 0;
   await c.save();
-  realtime.emitConversation(c);
+  await realtime.emitConversation(c);
 }
 
 router.get("/conversations/:id", async (req, res) => {
@@ -100,7 +100,7 @@ router.patch("/conversations/:id", async (req, res) => {
   if (CONVERSATION_STATUSES.includes(status)) c.status = status;
   await c.save();
   if (note) await addMessage(c, "system", note);
-  else realtime.emitConversation(c);
+  else await realtime.emitConversation(c);
   res.json(c);
 });
 

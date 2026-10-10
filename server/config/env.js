@@ -24,6 +24,7 @@ if (problems.length) {
 
 const env = Object.freeze({
   isProd,
+  isServerless: Boolean(process.env.VERCEL),
   PORT: Number(process.env.PORT) || 3000,
   DATABASE_URL: process.env.DATABASE_URL,
   JWT_SECRET: jwtSecret,
